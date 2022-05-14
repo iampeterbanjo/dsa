@@ -20,4 +20,17 @@ export class BinarySearchTree {
     }
     return this;
   }
+
+  contains(value: number): boolean {
+    if (this.value === value) {
+      return true;
+    }
+
+    const side = this.value > value ? "left" : "right";
+    if (this[side] === null) {
+      return false;
+    }
+    // @ts-ignore
+    return this[side].contains(value);
+  }
 }

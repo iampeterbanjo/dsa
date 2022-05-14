@@ -32,3 +32,26 @@ test("insert a value is correct", (t) => {
   t.is(bst.right?.left?.value, 14);
   t.is(bst.right?.left?.left?.value, 13);
 });
+
+test("contains a value is correct", (t) => {
+  const value = 10;
+  const bst = new BST(value);
+
+  bst.insert(5); // left
+  bst.insert(15); // right
+  bst.insert(5); // left.right
+
+  t.true(bst.contains(5));
+  t.true(bst.contains(15));
+  t.false(bst.contains(200));
+
+  bst.insert(2); // left.left
+  bst.insert(1); // left.left.left
+  bst.insert(22); // right.right
+  bst.insert(14); // right.left
+  bst.insert(13); // right.left.left
+
+  t.true(bst.contains(2));
+  t.true(bst.contains(13));
+  t.false(bst.contains(33));
+});
