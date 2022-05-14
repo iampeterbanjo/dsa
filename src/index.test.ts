@@ -23,6 +23,7 @@ test("insert a value is correct", (t) => {
   bst.insert(14); // right.left
   bst.insert(13); // right.left.left
 
+  // check values
   t.is(bst.left?.value, 5);
   t.is(bst.right?.value, 15);
   t.is(bst.left?.left?.value, 2);
@@ -31,6 +32,17 @@ test("insert a value is correct", (t) => {
   t.is(bst.right?.right?.value, 22);
   t.is(bst.right?.left?.value, 14);
   t.is(bst.right?.left?.left?.value, 13);
+
+  // check parents
+  t.is(bst.parent, null);
+  t.is(bst.left?.parent?.value, 10);
+  t.is(bst.right?.parent?.value, 10);
+  t.is(bst.left?.left?.parent?.value, 5);
+  t.is(bst.left?.right?.parent?.value, 5);
+  t.is(bst.left?.left?.left?.parent?.value, 2);
+  t.is(bst.right?.right?.parent?.value, 15);
+  t.is(bst.right?.left?.parent?.value, 15);
+  t.is(bst.right?.left?.left?.parent?.value, 14);
 });
 
 test("contains a value is correct", (t) => {
@@ -54,4 +66,45 @@ test("contains a value is correct", (t) => {
   t.true(bst.contains(2));
   t.true(bst.contains(13));
   t.false(bst.contains(33));
+});
+
+test.skip("remove a value is correct", (t) => {
+  const value = 10;
+  const bst = new BST(value);
+
+  bst.insert(5); // left
+  bst.insert(15); // right
+  bst.insert(5); // left.right
+  bst.insert(2); // left.left
+  bst.insert(1); // left.left.left
+  bst.insert(22); // right.right
+  bst.insert(14); // right.left
+  bst.insert(13); // right.left.left
+
+  bst.remove(5);
+
+  t.is(bst.left?.value, 2);
+  t.is(bst.left?.left?.value, 1);
+  t.is(bst.left?.right, null);
+  t.is(bst.right?.value, 15);
+  t.is(bst.right?.left?.value, 14);
+  t.is(bst.right?.right?.value, 22);
+});
+
+test("getBottomLeft returns correct value", (t) => {
+  const value = 10;
+  const bst = new BST(value);
+
+  bst.insert(5); // left
+  bst.insert(15); // right
+  bst.insert(5); // left.right
+  bst.insert(2); // left.left
+  bst.insert(1); // left.left.left
+  bst.insert(22); // right.right
+  bst.insert(14); // right.left
+  bst.insert(13); // right.left.left
+
+  const node = bst.getBottomLeft();
+  t.is(node?.value, 1);
+  t.is(node?.parent?.value, 2);
 });
