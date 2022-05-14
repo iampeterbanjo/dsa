@@ -11,14 +11,21 @@
       "ts-node/register"
     ]
   },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
   "scripts": {
     "test": "ava",
-    "watch-test": "ava --watch"
+    "watch-test": "ava --watch",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@ava/typescript": "^2.0.0",
     "@sindresorhus/tsconfig": "^1.0.2",
     "ava": "^3.15.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^12.4.1",
+    "prettier": "2.6.2",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4"
   },
@@ -26,7 +33,9 @@
     "type": "git",
     "url": "git+https://github.com/iampeterbanjo/binary-search-tree.git"
   },
-  "keywords": [],
+  "keywords": [
+    "binary-search-tree"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
