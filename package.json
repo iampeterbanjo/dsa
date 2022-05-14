@@ -15,9 +15,12 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "scripts": {
+    "pretest": "npm run lint",
     "test": "ava",
     "watch-test": "ava --watch",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint": "prettier --check .",
+    "lint-fix": "prettier --write ."
   },
   "devDependencies": {
     "@ava/typescript": "^2.0.0",
