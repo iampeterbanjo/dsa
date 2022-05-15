@@ -33,6 +33,16 @@ test("insert a value is correct", (t) => {
   t.is(bst.right?.left?.value, 14);
   t.is(bst.right?.left?.left?.value, 13);
 
+  // check side
+  t.is(bst.left?.position, "left");
+  t.is(bst.right?.position, "right");
+  t.is(bst.left?.left?.position, "left");
+  t.is(bst.left?.right?.position, "right");
+  t.is(bst.left?.left?.left?.position, "left");
+  t.is(bst.right?.right?.position, "right");
+  t.is(bst.right?.left?.position, "left");
+  t.is(bst.right?.left?.left?.position, "left");
+
   // check parents
   t.is(bst.parent, null);
   t.is(bst.left?.parent?.value, 10);
@@ -66,6 +76,16 @@ test("contains a value is correct", (t) => {
   t.true(bst.contains(2));
   t.true(bst.contains(13));
   t.false(bst.contains(33));
+});
+
+test("remove node with no child is correct", (t) => {
+  const value = 10;
+  const bst = new BST(value);
+  bst.insert(5); // left
+
+  bst.remove(5);
+
+  t.is(bst.left, null);
 });
 
 test.skip("remove a value is correct", (t) => {
@@ -104,7 +124,7 @@ test("getBottomLeft returns correct value", (t) => {
   bst.insert(14); // right.left
   bst.insert(13); // right.left.left
 
-  const node = bst.getBottomLeft();
+  const node = bst.getSmallest();
   t.is(node?.value, 1);
   t.is(node?.parent?.value, 2);
 });
