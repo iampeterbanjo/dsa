@@ -1,7 +1,7 @@
 export class BinarySearchTree {
   left: BinarySearchTree | null;
   right: BinarySearchTree | null;
-  parent: BinarySearchTree | null;
+  parent: BinarySearchTree;
   position: "left" | "right";
   value: number;
 
@@ -9,7 +9,8 @@ export class BinarySearchTree {
     this.value = value;
     this.left = null;
     this.right = null;
-    this.parent = null;
+    // is root else re-assigned during insertion
+    this.parent = this;
     // not ideal, but needs to be an index value
     this.position = "left";
   }
@@ -27,12 +28,13 @@ export class BinarySearchTree {
     if (this[side] === null) {
       return null;
     }
+    // object is possibly null. how??!!
     // @ts-ignore
     return this[side].find(value);
   }
 
   // search subtree for smallest value
-  private getSmallest(): BinarySearchTree {
+  getSmallest(): BinarySearchTree {
     if (this.left === null) {
       return this;
     }
@@ -47,11 +49,11 @@ export class BinarySearchTree {
       node.parent = this;
       node.position = side;
       this[side] = node;
-    } else {
-      // @ts-ignore
-      this[side].insert(value);
+
+      return this;
     }
-    return this;
+    // @ts-ignore
+    return this[side].insert(value);
   }
 
   contains(value: number): boolean {
@@ -75,14 +77,13 @@ export class BinarySearchTree {
       // and replace it with the current node
       const replacement = node.right.getSmallest();
       node.value = replacement.value;
-      if (replacement.parent !== null) {
-        replacement.parent[replacement.position] = null;
-      }
+      replacement.parent[replacement.position] = null;
+
       return null;
     }
 
     // no children
-    if (node.parent !== null && node.left === null && node.right === null) {
+    if (node.left === null && node.right === null) {
       node.parent[node.position] = null;
       return null;
     }

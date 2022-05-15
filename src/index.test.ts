@@ -44,7 +44,7 @@ test("insert value(s)", (t) => {
   t.is(bst.right?.left?.left?.position, "left");
 
   // check parents
-  t.is(bst.parent, null);
+  t.is(bst.parent, bst);
   t.is(bst.left?.parent?.value, 10);
   t.is(bst.right?.parent?.value, 10);
   t.is(bst.left?.left?.parent?.value, 5);
