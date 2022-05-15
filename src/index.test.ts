@@ -124,7 +124,7 @@ test("remove node with both left and right children and parent", (t) => {
   t.is(bst.left?.right, null);
 });
 
-test.skip("remove node with subtree", (t) => {
+test("remove node with subtree", (t) => {
   const value = 10;
   const bst = new BST(value);
 
@@ -139,15 +139,16 @@ test.skip("remove node with subtree", (t) => {
 
   bst.remove(5);
 
-  t.is(bst.left?.value, 2);
-  t.is(bst.left?.left?.value, 1);
+  t.is(bst.left?.value, 5); // right.smallest
+  t.is(bst.left?.left?.value, 2);
+  t.is(bst.left?.left?.left?.value, 1);
   t.is(bst.left?.right, null);
   t.is(bst.right?.value, 15);
   t.is(bst.right?.left?.value, 14);
   t.is(bst.right?.right?.value, 22);
 });
 
-test("getBottomLeft returns correct value", (t) => {
+test("getSmallest returns correct value", (t) => {
   const value = 10;
   const bst = new BST(value);
 
