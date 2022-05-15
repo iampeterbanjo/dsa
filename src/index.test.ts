@@ -78,6 +78,20 @@ test("contains a value", (t) => {
   t.false(bst.contains(33));
 });
 
+test("remove missing node", (t) => {
+  const value = 10;
+  const bst = new BST(value);
+  bst.insert(5); // left
+  bst.insert(2); // left.left
+  bst.insert(15); // right
+
+  bst.remove(25);
+
+  t.is(bst.left?.value, 5);
+  t.is(bst.left?.left?.value, 2);
+  t.is(bst.right?.value, 15);
+});
+
 test("remove node with no child", (t) => {
   const value = 10;
   const bst = new BST(value);
