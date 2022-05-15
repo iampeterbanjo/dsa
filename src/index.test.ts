@@ -88,6 +88,28 @@ test("remove node with no child", (t) => {
   t.is(bst.left, null);
 });
 
+test("remove node with left child and no parent", (t) => {
+  const value = 10;
+  const bst = new BST(value);
+  bst.insert(5); // left
+
+  bst.remove(10);
+
+  t.is(bst.value, 5);
+  t.is(bst.left, null);
+});
+
+test("remove node with right child and no parent", (t) => {
+  const value = 10;
+  const bst = new BST(value);
+  bst.insert(15); // left
+
+  bst.remove(10);
+
+  t.is(bst.value, 15);
+  t.is(bst.right, null);
+});
+
 test.skip("remove a value", (t) => {
   const value = 10;
   const bst = new BST(value);
