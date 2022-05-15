@@ -10,11 +10,37 @@ export class BinarySearchTree {
     this.left = null;
     this.right = null;
     this.parent = null;
+    // not ideal, but needs to be an index value
     this.position = "left";
   }
 
-  insert(value: number): BinarySearchTree {
+  private getSide(value: number) {
+    return this.value > value ? "left" : "right";
+  }
+
+  private find(value: number): BinarySearchTree | null {
+    if (this.value === value) {
+      return this;
+    }
+
     const side = this.value > value ? "left" : "right";
+    if (this[side] === null) {
+      return null;
+    }
+    // @ts-ignore
+    return this[side].find(value);
+  }
+
+  // search subtree for smallest value
+  private getSmallest(): BinarySearchTree {
+    if (this.left === null) {
+      return this;
+    }
+    return this.left.getSmallest();
+  }
+
+  insert(value: number): BinarySearchTree {
+    const side = this.getSide(value);
 
     if (this[side] === null) {
       const node = new BinarySearchTree(value);
@@ -26,19 +52,6 @@ export class BinarySearchTree {
       this[side].insert(value);
     }
     return this;
-  }
-
-  find(value: number): BinarySearchTree | null {
-    if (this.value === value) {
-      return this;
-    }
-
-    const side = this.value > value ? "left" : "right";
-    if (this[side] === null) {
-      return null;
-    }
-    // @ts-ignore
-    return this[side].find(value);
   }
 
   contains(value: number): boolean {
@@ -67,11 +80,13 @@ export class BinarySearchTree {
       }
       return null;
     }
+
     // no children
     if (node.parent !== null && node.left === null && node.right === null) {
       node.parent[node.position] = null;
       return null;
     }
+
     // only one chiled
     const child = node.left || node.right;
     if (child !== null) {
@@ -80,13 +95,5 @@ export class BinarySearchTree {
     }
 
     return null;
-  }
-
-  // search subtree for smallest value
-  getSmallest(): BinarySearchTree {
-    if (this.left === null) {
-      return this;
-    }
-    return this.left.getSmallest();
   }
 }
