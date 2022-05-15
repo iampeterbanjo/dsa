@@ -110,7 +110,21 @@ test("remove node with right child and no parent", (t) => {
   t.is(bst.right, null);
 });
 
-test.skip("remove a value", (t) => {
+test("remove node with both left and right children and parent", (t) => {
+  const value = 10;
+  const bst = new BST(value);
+  bst.insert(5); // left
+  bst.insert(2); // left.left
+  bst.insert(6); // left.right
+
+  bst.remove(5);
+
+  t.is(bst.left?.value, 6);
+  t.is(bst.left?.left?.value, 2);
+  t.is(bst.left?.right, null);
+});
+
+test.skip("remove node with subtree", (t) => {
   const value = 10;
   const bst = new BST(value);
 
