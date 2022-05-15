@@ -10,7 +10,7 @@ test("new BST is initialised correctly", (t) => {
   t.is(bst.right, null);
 });
 
-test("insert a value is correct", (t) => {
+test("insert value(s)", (t) => {
   const value = 10;
   const bst = new BST(value);
 
@@ -55,7 +55,7 @@ test("insert a value is correct", (t) => {
   t.is(bst.right?.left?.left?.parent?.value, 14);
 });
 
-test("contains a value is correct", (t) => {
+test("contains a value", (t) => {
   const value = 10;
   const bst = new BST(value);
 
@@ -78,7 +78,7 @@ test("contains a value is correct", (t) => {
   t.false(bst.contains(33));
 });
 
-test("remove node with no child is correct", (t) => {
+test("remove node with no child", (t) => {
   const value = 10;
   const bst = new BST(value);
   bst.insert(5); // left
@@ -88,7 +88,7 @@ test("remove node with no child is correct", (t) => {
   t.is(bst.left, null);
 });
 
-test.skip("remove a value is correct", (t) => {
+test.skip("remove a value", (t) => {
   const value = 10;
   const bst = new BST(value);
 
