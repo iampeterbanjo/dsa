@@ -102,7 +102,7 @@ test("remove node with no child", (t) => {
   t.is(bst.left, null);
 });
 
-test("remove node with left child and no parent", (t) => {
+test("remove root with left child", (t) => {
   const value = 10;
   const bst = new BST(value);
   bst.insert(5); // left
@@ -113,10 +113,10 @@ test("remove node with left child and no parent", (t) => {
   t.is(bst.left, null);
 });
 
-test("remove node with right child and no parent", (t) => {
+test("remove root with right child", (t) => {
   const value = 10;
   const bst = new BST(value);
-  bst.insert(15); // left
+  bst.insert(15); // right
 
   bst.remove(10);
 
