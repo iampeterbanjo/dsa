@@ -24,13 +24,17 @@ export class BinarySearchTree {
       return this;
     }
 
-    const side = this.value > value ? "left" : "right";
+    const side = this.getSide(value);
     if (this[side] === null) {
       return null;
     }
     // object is possibly null. how??!!
     // @ts-ignore
     return this[side].find(value);
+  }
+
+  private isRoot() {
+    return this.parent === this;
   }
 
   // search subtree for smallest value
@@ -58,16 +62,16 @@ export class BinarySearchTree {
 
   contains(value: number): boolean {
     const node = this.find(value);
-    if (node !== null) {
-      return true;
+    if (node === null) {
+      return false;
     }
-    return false;
+    return true;
   }
 
-  remove(value: number): null {
+  remove(value: number): BinarySearchTree {
     const node = this.find(value);
     if (node === null) {
-      return null;
+      return this;
     }
 
     // there are both left and right children
@@ -79,22 +83,29 @@ export class BinarySearchTree {
       node.value = replacement.value;
       replacement.parent[replacement.position] = null;
 
-      return null;
+      return this;
     }
 
     // no children
     if (node.left === null && node.right === null) {
       node.parent[node.position] = null;
-      return null;
+      return this;
     }
 
     // only one chiled
     const child = node.left || node.right;
-    if (child !== null) {
-      node.value = child.value;
-      node[child.position] = null;
+    if (child === null) {
+      return this;
     }
 
-    return null;
+    if (node.isRoot()) {
+      node.value = child.value;
+      node[child.position] = null;
+      return this;
+    }
+
+    node.parent[node.position] = child;
+
+    return this;
   }
 }

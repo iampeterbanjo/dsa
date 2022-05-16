@@ -154,12 +154,31 @@ test("remove node with subtree", (t) => {
   bst.remove(5);
 
   t.is(bst.left?.value, 5); // right.smallest
+  t.is(bst.right?.value, 15);
   t.is(bst.left?.left?.value, 2);
   t.is(bst.left?.left?.left?.value, 1);
   t.is(bst.left?.right, null);
   t.is(bst.right?.value, 15);
   t.is(bst.right?.left?.value, 14);
   t.is(bst.right?.right?.value, 22);
+});
+
+test("remove node with one-sided subtree (right)", (t) => {
+  const bst = new BST(1);
+  // insert 19 sequential nodes
+  for (let index = 2; index <= 20; index++) {
+    bst.insert(index);
+    t.true(bst.contains(index), `${index} should be in the tree`);
+  }
+
+  bst.remove(2);
+
+  t.true(bst.contains(1));
+  t.false(bst.contains(2));
+
+  for (let index = 3; index <= 20; index++) {
+    t.true(bst.contains(index), `${index} should be in the tree`);
+  }
 });
 
 test("getSmallest returns correct value", (t) => {
