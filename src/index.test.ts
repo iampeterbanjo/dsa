@@ -181,7 +181,7 @@ test("remove node with one-sided subtree (right)", (t) => {
   }
 });
 
-test("getSmallest returns correct value", (t) => {
+test("getSmallest returns correct value when left child exists", (t) => {
   const value = 10;
   const bst = new BST(value);
 
@@ -197,4 +197,115 @@ test("getSmallest returns correct value", (t) => {
   const node = bst.getSmallest();
   t.is(node?.value, 1);
   t.is(node?.parent?.value, 2);
+});
+
+test("getSmallest returns correct value when this.right.left child is null", (t) => {
+  const value = 10;
+  const bst = new BST(value);
+
+  bst.insert(5); // left
+  bst.insert(15); // right
+  bst.insert(5); // left.right
+  bst.insert(2); // left.left
+  bst.insert(1); // left.left.left
+  bst.insert(22); // right.right
+  bst.insert(14); // right.left
+  bst.insert(13); // right.left.left
+
+  const node = bst.getSmallest();
+  t.is(node?.value, 1);
+  t.is(node?.parent?.value, 2);
+});
+
+test("getSuccessor returns null if no left or right child", (t) => {
+  const value = 10;
+  const bst = new BST(value);
+
+  const successor = bst.getSuccessor();
+
+  t.is(successor, null);
+});
+
+test("getSuccessor returns left if no right child", (t) => {
+  const value = 10;
+  const bst = new BST(value);
+  bst.insert(5); // left
+
+  const successor = bst.getSuccessor();
+
+  t.is(successor?.value, 5);
+});
+
+test("getSuccessor returns right if right has no children", (t) => {
+  const value = 10;
+  const bst = new BST(value);
+  bst.insert(5); // left
+  bst.insert(11); // right
+
+  const successor = bst.getSuccessor();
+
+  t.is(successor?.value, 11);
+});
+
+test("getSuccessor returns smallest if right has children", (t) => {
+  const value = 4;
+  const bst = new BST(value);
+  bst.insert(3); // left
+  bst.insert(6); // right
+  bst.insert(5); // right.left
+  bst.insert(15); // right.right
+
+  const successor = bst.getSuccessor();
+
+  t.is(successor?.value, 5);
+});
+
+test("replace node with left and right children with leaf", (t) => {
+  const bst = new BST(4);
+  bst.insert(3); // left
+  bst.insert(6); // right
+  bst.insert(5); // left.right
+  bst.insert(7); // right.right
+
+  const node = bst.find(6);
+  const leaf = bst.find(7);
+  const result = node?.replace(leaf as BST);
+
+  t.is(result?.value, 7);
+  t.is(result?.left?.value, 5);
+  t.is(result?.right, null);
+});
+
+test("replace node with left and right children with child (bypass node)", (t) => {
+  const bst = new BST(4);
+  bst.insert(3); // left
+  bst.insert(6); // right
+  bst.insert(7); // right.right
+  bst.insert(8); // right.right.right
+
+  const node = bst.find(6);
+  const other = bst.find(7);
+  const result = node?.replace(other as BST);
+
+  t.is(result?.value, 7);
+  t.is(result?.right?.value, 8);
+  t.is(bst.find(6), null);
+});
+
+test("replace root node with left and right children with child", (t) => {
+  const bst = new BST(4);
+  bst.insert(3); // left
+  bst.insert(6); // right
+  bst.insert(7); // right.right
+  bst.insert(8); // right.right.right
+
+  const node = bst.find(4);
+  const other = bst.find(7);
+  const result = node?.replace(other as BST);
+
+  t.is(result?.value, 7);
+  t.is(result?.right?.value, 6);
+  t.is(result?.left?.value, 3);
+  t.is(result?.right?.right?.value, 8);
+  t.is(bst.find(4), null);
 });

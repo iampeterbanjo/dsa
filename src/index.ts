@@ -9,7 +9,7 @@ export class BinarySearchTree {
     this.value = value;
     this.left = null;
     this.right = null;
-    // is root else re-assigned during insertion
+    // default is root but its re-assigned during insertion
     this.parent = this;
     // not ideal, but needs to be an index value
     this.position = "left";
@@ -19,7 +19,7 @@ export class BinarySearchTree {
     return this.value > value ? "left" : "right";
   }
 
-  private find(value: number): BinarySearchTree | null {
+  find(value: number): BinarySearchTree | null {
     if (this.value === value) {
       return this;
     }
@@ -33,8 +33,18 @@ export class BinarySearchTree {
     return this[side].find(value);
   }
 
-  private isRoot() {
-    return this.parent === this;
+  // find replacement node
+  // if no right or left return null
+  // when no right child return this.left
+  // else find smallest node in right subtree
+  getSuccessor(): BinarySearchTree | null {
+    if (this.right === null && this.left === null) {
+      return null;
+    }
+    if (this.right === null) {
+      return this.left;
+    }
+    return this.right.getSmallest();
   }
 
   // search subtree for smallest value
@@ -43,6 +53,15 @@ export class BinarySearchTree {
       return this;
     }
     return this.left.getSmallest();
+  }
+
+  replace(node: BinarySearchTree): BinarySearchTree {
+    this.value = node.value;
+    node.parent[node.position] = node.getSuccessor();
+    node.left = this.left;
+    node.right = this.right;
+
+    return this;
   }
 
   insert(value: number): BinarySearchTree {
@@ -74,37 +93,11 @@ export class BinarySearchTree {
       return this;
     }
 
-    // there are both left and right children
-    if (node.left !== null && node.right !== null) {
-      // we need to find the smallest value
-      // on the right subtree
-      // and replace it with the current node
-      const replacement = node.right.getSmallest();
-      node.value = replacement.value;
-      replacement.parent[replacement.position] = null;
-
-      return this;
+    const successor = node.getSuccessor();
+    node.parent[node.position] = successor;
+    if (successor !== null) {
+      node.replace(successor);
     }
-
-    // no children
-    if (node.left === null && node.right === null) {
-      node.parent[node.position] = null;
-      return this;
-    }
-
-    // only one chiled
-    const child = node.left || node.right;
-    if (child === null) {
-      return this;
-    }
-
-    if (node.isRoot()) {
-      node.value = child.value;
-      node[child.position] = null;
-      return this;
-    }
-
-    node.parent[node.position] = child;
 
     return this;
   }
