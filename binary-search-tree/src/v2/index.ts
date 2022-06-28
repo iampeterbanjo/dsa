@@ -29,37 +29,13 @@ export class BST {
 
   // search BST for value
   contains(value: number): boolean {
-    if (this.value === value) {
-      return true;
-    }
-    const side = this.getSide(value);
-    if (this[side] === null) {
-      return false;
-    }
-    return this[side]!.contains(value);
-  }
+    const { node } = this.find(value);
 
-  // update Node value
-  setValue(value: number) {
-    this.value = value;
-    return this;
-  }
-
-  // update child node
-  updateChild(child: BST, update: BST | null) {
-    const side = this.getSide(child.value);
-    this[side] = update;
-
-    return this;
+    return node !== null;
   }
 
   // handle delete root as special case
   deleteRoot() {
-    if (this.right && this.left) {
-      this.replaceWithSuccessor();
-      return this;
-    }
-
     if (this.left) {
       this.value = this.left.value;
       this.right = this.left.right;
@@ -102,32 +78,23 @@ export class BST {
       return this;
     }
 
+    // has both children
+    if (remove.right && remove.left) {
+      remove.replaceWithSuccessor();
+      return this;
+    }
+
     // no parent means we are removing the root node
     if (!parent) {
       remove.deleteRoot();
       return this;
     }
 
-    // both children
-    if (remove.right && remove.left) {
-      remove.replaceWithSuccessor();
-      return this;
-    }
+    // skip removed node on the same side as parent
+    // if removed node's left or right child is null, that's ok
+    const side = parent.getSide(remove.value);
+    parent[side] = remove.left ? remove.left : remove.right;
 
-    // skip removed node with a left subtree first
-    if (parent.left === remove) {
-      parent.left = remove.left ? remove.left : remove.right;
-
-      return this;
-    }
-
-    if (parent.right === remove) {
-      parent.right = remove.left ? remove.left : remove.right;
-
-      return this;
-    }
-
-    // must have no children
     return this;
   }
 
@@ -151,6 +118,7 @@ export class BST {
 
   // find node successor
   getBottomLeft(parent: BST | null = null): { node: BST; parent: BST | null } {
+    // note: parent is null when there is no left subtree
     if (this.left === null) {
       return { node: this, parent };
     }
