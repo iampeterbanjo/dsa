@@ -1,3 +1,3 @@
-# binary-search-tree
+# Data structures and Algorithms
 
-Binary Search Tree in Typescript
+Examples and exercises
