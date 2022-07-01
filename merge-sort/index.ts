@@ -21,17 +21,22 @@ const mergeSort = (array: number[]): number[] => {
   };
 
   // writes copy array values into target array
-  const copyInto = (target: number[], copy: number[]) => {
-    copy.forEach((i) => {
+  const copyInto = (
+    target: number[],
+    copy: number[],
+    start: number,
+    end: number
+  ) => {
+    for (let i = start; i <= end; i++) {
       target[i] = copy[i];
-    });
+    }
   };
 
   // compare two array of integers
   // and merge in sorted order
   const merge = (low: number, mid: number, high: number) => {
-    // use auxilliary array as workspace
-    copyInto(aux, array.slice(low, high + 1));
+    // copy sorted arrays into auxillary
+    copyInto(aux, array, low, high);
 
     let left = low;
     let right = mid + 1;
@@ -43,7 +48,7 @@ const mergeSort = (array: number[]): number[] => {
      *  left/low       mid     right           high
      */
     // compare their top items
-    for (let i = low; i < high; i++) {
+    for (let i = low; i <= high; i++) {
       if (left > mid) {
         // left subarray is empty so use all right value
         array[i] = aux[right];
@@ -52,12 +57,12 @@ const mergeSort = (array: number[]): number[] => {
         // right subarray is empty so use all left values
         array[i] = aux[left];
         left++;
-      } else if (aux[left] < aux[right]) {
-        array[i] = aux[left];
-        left++;
-      } else {
+      } else if (aux[right] < aux[left]) {
         array[i] = aux[right];
         right++;
+      } else {
+        array[i] = aux[left];
+        left++;
       }
     }
   };
@@ -67,4 +72,4 @@ const mergeSort = (array: number[]): number[] => {
   return array;
 };
 
-console.log(mergeSort([4, 2]));
+console.log(mergeSort([4, 200, 3, 7, 199, 18]));
