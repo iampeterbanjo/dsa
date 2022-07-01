@@ -53,17 +53,26 @@ const mergeSort = (array: number[]): number[] => {
         // left subarray is empty so use all right value
         array[i] = aux[right];
         right++;
-      } else if (right > high) {
+        continue;
+      }
+
+      if (right > high) {
         // right subarray is empty so use all left values
         array[i] = aux[left];
         left++;
-      } else if (aux[right] < aux[left]) {
+        continue;
+      }
+
+      // take right-side
+      if (aux[right] < aux[left]) {
         array[i] = aux[right];
         right++;
-      } else {
-        array[i] = aux[left];
-        left++;
+        continue;
       }
+
+      // take left-side
+      array[i] = aux[left];
+      left++;
     }
   };
 
