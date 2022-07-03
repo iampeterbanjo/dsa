@@ -1,8 +1,8 @@
-# Min heap
+# Heaps
 
-## Basics
+## Min heap
 
-A min-heap is an Abstract Data type which follows three rules:
+A Min heap is an Abstract Data type which follows three rules:
 
 1. It is a complete binary tree - left-side is filled before right-side.
 2. A parent has a smaller value than any of it's children
@@ -28,23 +28,31 @@ binary tree:
     7     9   6
 ```
 
-## Operations
+### Operations
 
-### Insert
+#### Insert
 
 - Add the new value to the next available slot - bottom, left-most null node.
 - Bubble-up the node to its correct position in the heap
 
-### Delete
+#### Delete
 
 - Only the root node can be deleted
 - When deleted, replace with the bottom, left-most node
 - Bubble-down the root node to its correct position in the heap
 
-### Peek
+#### Peek
 
 - Get the root node e.g. smallest value
 
-## Performance
+### Performance
 
 Since a Min heap is a complete binary tree, it's height is guaranteed to be O(log(N)) and operate at O(log(N)) for insert and delete.
+
+### Applications
+
+- Heaps are used to implement Priority Queues where each node's key represents a comparable value and can the node can also a value. E.g. a queue with VIPs, a hospital triage list, find kth largest element.
+
+## Max heap
+
+To get a Max heap we can make negate keys on insertion, and negate again on retrieval to get the positive value.
