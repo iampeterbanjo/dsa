@@ -4,6 +4,8 @@ export class MinHeap {
 
   // create a min heap
   constructor(array: number[]) {
+    // skip 0th position to simplify calculations
+    this.heap = [-Infinity];
     this.buildHeap(array);
   }
 
@@ -25,9 +27,6 @@ export class MinHeap {
   // given an array of random integers
   // create a min heap
   buildHeap(array: number[]) {
-    // skip 0th position to simplify calculations
-    this.heap = [-Infinity];
-
     // builder helper for insertion
     const insertAt = (index: number) => { // 2
       const heapIndex = index + 1; // 3
@@ -86,3 +85,5 @@ export class MinHeap {
     // Write your code here.
   }
 }
+
+
