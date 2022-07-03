@@ -11,9 +11,9 @@ A Min heap is an Abstract Data type which follows three rules:
 Although a Min-heaps are Binary Trees, for performance reasons, they are implemented with arrays where the indices are -
 
 - 0th index = null (to make the Math easier)
-- left-child = 2\*index
-- right-child = 2\*index + 1
-- parent = Math.floor(index/2)
+- left-child = `2 * index`
+- right-child = `2 * index + 1`
+- parent = `Math.floor(index/2)`
 
 For example, this is a min heap:
 
