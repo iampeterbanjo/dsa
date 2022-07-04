@@ -131,9 +131,9 @@ export class MinHeap {
     }
   }
 
+  // get the first item
   peek() {
-    // Write your code here.
-    return -1;
+    return this.heap[this.firstIndex];
   }
 
   // remove the root node
