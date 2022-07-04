@@ -43,5 +43,21 @@ const testDeleteRootIsCorrect = (array: number[], correct: number[]) => {
   expectArrayContaining(minHeap.heap, correct);
 }
 
-testDeleteRootIsCorrect([7, 8, 0, 2, 6, 8, 24], [2, 6, 7, 8, 24, 8])
+testDeleteRootIsCorrect([7, 8, 0, 2, 6, 8, 24], [2, 6, 7, 8, 24, 8]);
+
+
+/**
+ * Given an array of random integers
+ * And a correctly built heap
+ * When an item is inserted
+ * Then the resulting heap is correct
+ */
+const testInsertItemIsCorrect = (array: number[], value: number, correct: number[]) => {
+  const minHeap = new MinHeap(array);
+
+  minHeap.insert(value);
+
+  expectArrayContaining(minHeap.heap, correct);
+}
+testInsertItemIsCorrect([2, 6, 7, 8, 24, 8], 0, [0, 6, 2, 8, 24, 8, 7]);
 

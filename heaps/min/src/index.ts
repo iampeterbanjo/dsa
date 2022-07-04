@@ -144,8 +144,10 @@ export class MinHeap {
     this.siftDown();
   }
 
+  // add item to heap and rebalance
   insert(value: number) {
-    // Write your code here.
+    this.heap[this.lastIndex + 1] = value;
+    this.siftUp();
   }
 }
 
