@@ -3,29 +3,18 @@ export class MinHeap {
 
   // create a min heap
   constructor(array: number[]) {
-    // skip 0th position to simplify calculations
-    this.heap = [-Infinity];
+    this.heap = [];
     this.buildHeap(array);
   }
 
-  // get first index position
-  get firstIndex() {
-    return 1;
-  }
-
-  // last index position
+  // get last index
   get lastIndex() {
     return this.heap.length - 1;
   }
 
-  // get item at index
-  item(index: number) {
-    return this.heap[index];
-  }
-
   // get parent
   parentIndex(index: number) {
-    return Math.floor(index / 2);
+    return Math.floor((index - 1) / 2);
   }
 
   // get item at
@@ -35,7 +24,7 @@ export class MinHeap {
 
   // get the left child
   leftChildIndex(index: number) {
-    return 2 * index;
+    return 2 * index + 1;
   }
 
   // get right child
@@ -55,7 +44,7 @@ export class MinHeap {
 
   // check parent exists
   hasParent(index: number) {
-    return this.parentIndex(index) > 0;
+    return this.parentIndex(index) >= 0;
   }
 
   // check left child exists
@@ -71,21 +60,8 @@ export class MinHeap {
   // given an array of random integers
   // create a min heap
   buildHeap(array: number[]) {
-    // builder helper for insertion
-    const insertAt = (index: number) => {
-      const heapIndex = index + 1;
-      this.heap[heapIndex] = array[index];
-    };
-
-    for (let index = 0; index < array.length; index++) {
-      // adding the root is a special case
-      if (index === 0) {
-        insertAt(index);
-        continue;
-      }
-
-      insertAt(index);
-      this.siftUp();
+    for (const item of array) {
+      this.insert(item);
     }
   }
 
@@ -96,7 +72,7 @@ export class MinHeap {
 
   // make sure root node's value is in the right position
   siftDown() {
-    let index = 1;
+    let index = 0;
 
     // if there is no left child, there definitely is no right child
     while (this.hasLeftChild(index)) {
@@ -128,17 +104,20 @@ export class MinHeap {
 
   // get the first item
   peek() {
-    return this.heap[this.firstIndex];
+    return this.heap[0];
   }
 
   // remove the root node
   remove() {
+    const root = this.peek();
     // the successor of the root is the last item in the heap
-    this.heap[this.firstIndex] = this.heap[this.lastIndex];
+    this.heap[0] = this.heap[this.lastIndex];
     // only way to resize an array
     this.heap = this.heap.splice(0, this.lastIndex);
     // rebalance
     this.siftDown();
+
+    return root;
   }
 
   // add item to heap
