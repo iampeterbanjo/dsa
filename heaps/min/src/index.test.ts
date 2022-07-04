@@ -32,6 +32,21 @@ testBuiltHeapIsCorrect([7, 8, 0, 2, 6, 8, 24], [0, 2, 7, 8, 6, 8, 24]);
 /**
  * Given an array of random integers
  * And a correctly built heap
+ * Then peek returns the correct value
+ */
+const testPeekIsCorrect = (array: number[], correct: number) => {
+  const minHeap = new MinHeap(array);
+
+  const result = minHeap.peek();
+
+  assert(result === correct, `received ${result} and expected ${correct}`);
+}
+
+testPeekIsCorrect([7, 8, 0, 2, 6, 8, 24], 0);
+
+/**
+ * Given an array of random integers
+ * And a correctly built heap
  * When the root node is deleted
  * Then the resulting heap is correct
  */
