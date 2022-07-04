@@ -1,4 +1,3 @@
-
 export class MinHeap {
   heap: number[];
 
@@ -25,13 +24,13 @@ export class MinHeap {
   }
 
   // get parent
-  parentIndex(index: number) { // 3
-    return Math.floor(index / 2); // 1
+  parentIndex(index: number) {
+    return Math.floor(index / 2);
   }
 
   // get item at
   parent(index: number) {
-    return this.heap[this.parentIndex(index)]
+    return this.heap[this.parentIndex(index)];
   }
 
   // get the left child
@@ -45,7 +44,7 @@ export class MinHeap {
   }
 
   // get left child
-  leftChild(index: number)  {
+  leftChild(index: number) {
     return this.heap[this.leftChildIndex(index)];
   }
 
@@ -73,27 +72,25 @@ export class MinHeap {
   // create a min heap
   buildHeap(array: number[]) {
     // builder helper for insertion
-    const insertAt = (index: number) => { // 2
-      const heapIndex = index + 1; // 3
-      this.heap[heapIndex] = array[index]; // [-Inf, 1, 2, 0]
-    }
+    const insertAt = (index: number) => {
+      const heapIndex = index + 1;
+      this.heap[heapIndex] = array[index];
+    };
 
-    // for each item in array [1,2,0]
-    for (let index = 0; index < array.length; index++) { // 0, 2 < 3
+    for (let index = 0; index < array.length; index++) {
       // adding the root is a special case
-      if (index === 0) { // skip
+      if (index === 0) {
         insertAt(index);
         continue;
       }
 
-      insertAt(index) // 2
+      insertAt(index);
       this.siftUp();
     }
   }
 
   // swap items in heap
-  swap(src: number, target: number) { // heap: [-, 1, 2, 0], 3, 1
-    // 1, 0 = 0, 1 => [-, 0, 1, 2]
+  swap(src: number, target: number) {
     [this.heap[target], this.heap[src]] = [this.heap[src], this.heap[target]];
   }
 
@@ -101,33 +98,31 @@ export class MinHeap {
   siftDown() {
     let index = 1;
 
-    // [ -Infinity, 24, 2, 7, 8, 6, 8 ]
-    // [ -Infinity, 2, 6, 7, 8, 24, 8 ]
     // if there is no left child, there definitely is no right child
-    while (this.hasLeftChild(index)) { // 2 -> 4
-      const smallerChildIndex = this.leftChild(index) > this.rightChild(index) ? this.rightChildIndex(index) : this.leftChildIndex(index); // 5
+    while (this.hasLeftChild(index)) {
+      const smallerChildIndex =
+        this.leftChild(index) > this.rightChild(index)
+          ? this.rightChildIndex(index)
+          : this.leftChildIndex(index); // 5
 
-      if (this.heap[smallerChildIndex] > this.heap[index]) { // 6 > 24
+      if (this.heap[smallerChildIndex] > this.heap[index]) {
         // nothing to do
         break;
       }
 
-      this.swap(index, smallerChildIndex); // 2, 5
-      index = smallerChildIndex; // 5
+      this.swap(index, smallerChildIndex);
+      index = smallerChildIndex;
     }
   }
 
-  // assuming we're sifting-up the last inserted item
-  // we know it shoud be in the bottom, left position
+  // rebalance heap starting with the item in the last index
   siftUp() {
-    // [-, 1, 2, 0, ...]
-    // [0, 1, 2, 3]
-    let index = this.lastIndex; // 3
+    let index = this.lastIndex;
 
-    // heap[3] < heap[1] : 0 < 1: true
+    // keep swapping with bigger parents
     while (this.hasParent(index) && this.heap[index] < this.parent(index)) {
-      this.swap(index, this.parentIndex(index)); // heap, 3, 1
-      index = this.parentIndex(index); // 1
+      this.swap(index, this.parentIndex(index));
+      index = this.parentIndex(index);
     }
   }
 
@@ -138,17 +133,18 @@ export class MinHeap {
 
   // remove the root node
   remove() {
-    // place successor at root
-    this.heap[this.firstIndex] = this.heap[this.lastIndex] // [ -Infinity, 24, 2, 7, 8, 6, 8, 24 ]
-    this.heap = this.heap.splice(0, this.lastIndex); // [ -Infinity, 24, 2, 7, 8, 6, 8 ]
+    // the successor of the root is the last item in the heap
+    this.heap[this.firstIndex] = this.heap[this.lastIndex];
+    // only way to resize an array
+    this.heap = this.heap.splice(0, this.lastIndex);
+    // rebalance
     this.siftDown();
   }
 
-  // add item to heap and rebalance
+  // add item to heap
   insert(value: number) {
-    this.heap[this.lastIndex + 1] = value;
+    // add to the end of the array and rebalance
+    this.heap.push(value);
     this.siftUp();
   }
 }
-
-
